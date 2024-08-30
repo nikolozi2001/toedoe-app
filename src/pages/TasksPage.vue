@@ -15,9 +15,21 @@
           <Tasks :tasks="uncompletedTasks" />
 
           <!-- show toggle button -->
+          <div class="text-center my-3" v-show="showToggleCompletedBtn">
+            <button
+              class="btn btn-sm btn-secondary"
+              @click="($event) => (showCompletedTasks = !showCompletedTasks)"
+            >
+              <span v-if="!showCompletedTasks">Show completed</span>
+              <span v-else>Hide completed</span>
+            </button>
+          </div>
 
           <!-- list of complete tasks -->
-          <Tasks :tasks="completedTasks" />
+          <Tasks
+            :tasks="completedTasks"
+            :show="completedTasksIsVisible && showCompletedTasks"
+          />
         </div>
       </div>
     </div>
@@ -42,4 +54,14 @@ const uncompletedTasks = computed(() =>
 const completedTasks = computed(() =>
   tasks.value.filter((task) => task.is_completed)
 );
+const showToggleCompletedBtn = () => {
+  tasks.value = tasks.value.map((task) => ({
+    ...task,
+    is_completed: !task.is_completed,
+  }));
+};
+const completedTasksIsVisible = computed(
+  () => uncompletedTasks.value.length === 0 || completedTasks.value.length > 0
+);
+const showCompletedTasks = ref(false);
 </script>

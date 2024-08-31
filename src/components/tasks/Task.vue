@@ -11,7 +11,7 @@
         class="ms-2 flex-grow-1"
         :class="completedClass"
         title="Double click the text to edit or remove"
-        @dbclick="isEdit = true"
+        @dblclick="isEdit = true"
       >
         <div class="relative" v-if="isEdit">
           <input
@@ -19,6 +19,7 @@
             type="text"
             @keyup.esc="isEdit = false"
             v-focus
+            @keyup.enter="updateTask"
           />
         </div>
         <span v-else>{{ task.name }}</span>
@@ -30,23 +31,29 @@
 </template>
 
 <script setup>
+import IconPencil from "../icons/IconPencil.vue";
+import IconTrash from "../icons/IconTrash.vue";
 import { computed, ref } from "vue";
 import TaskActions from "./TaskActions.vue";
 
 const props = defineProps({
-  task: {
-    type: Object,
-    required: true,
-  },
+  task: Object,
 });
 
-const isEdit = ref(false);
+const emit = defineEmits(["updated"]);
 
+const isEdit = ref(false);
 const completedClass = computed(() =>
   props.task.is_completed ? "completed" : ""
 );
 
 const vFocus = {
   mounted: (el) => el.focus(),
+};
+
+const updateTask = (event) => {
+  const updatedTask = { ...props.task, name: event.target.value };
+  isEdit.value = false;
+  emit("updated", updatedTask);
 };
 </script>

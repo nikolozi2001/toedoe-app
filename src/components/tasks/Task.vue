@@ -3,9 +3,10 @@
     <div class="d-flex justify-content-start align-items-center">
       <input
         class="form-check-input mt-0"
-        :class="completedClass"
         type="checkbox"
+        :class="completedClass"
         :checked="task.is_completed"
+        @change="markTaskAsCompleted"
       />
       <div
         class="ms-2 flex-grow-1"
@@ -17,10 +18,9 @@
           <input
             class="editable-task"
             type="text"
-            @keyup.esc="undo"
+            @keyup.esc="isEdit = false"
             v-focus
             @keyup.enter="updateTask"
-            v-model="editingTask"
           />
         </div>
         <span v-else>{{ task.name }}</span>
@@ -41,11 +41,9 @@ const props = defineProps({
   task: Object,
 });
 
-const emit = defineEmits(["updated"]);
+const emit = defineEmits(["updated", "completed"]);
 
 const isEdit = ref(false);
-const editingTask = ref(props.task.name);
-
 const completedClass = computed(() =>
   props.task.is_completed ? "completed" : ""
 );
@@ -60,8 +58,11 @@ const updateTask = (event) => {
   emit("updated", updatedTask);
 };
 
-const undo = () => {
-  isEdit.value = false;
-  editingTask.value = props.task.name;
+const markTaskAsCompleted = (event) => {
+  const updatedTask = {
+    ...props.task,
+    is_completed: !props.task.is_completed,
+  };
+  emit("completed", updatedTask);
 };
 </script>

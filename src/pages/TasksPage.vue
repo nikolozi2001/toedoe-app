@@ -47,8 +47,19 @@ import {
   completeTask,
   removeTask,
 } from "../http/task-api";
+import { storeToRefs } from "pinia";
+import { useTaskStore } from "../stores/task";
 import Tasks from "../components/tasks/Tasks.vue";
 import NewTask from "../components/tasks/NewTask.vue";
+
+const store = useTaskStore();
+const { task } = storeToRefs(store);
+// store.$patch({
+//     task: {
+//         name: "First task updated using $patch",
+//         is_completed: true
+//     }
+// })
 
 const tasks = ref([]);
 

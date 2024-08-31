@@ -40,6 +40,8 @@
 </template>
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useTaskStore } from "../stores/task";
 import {
   allTasks,
   createTask,
@@ -47,8 +49,6 @@ import {
   completeTask,
   removeTask,
 } from "../http/task-api";
-import { storeToRefs } from "pinia";
-import { useTaskStore } from "../stores/task";
 import Tasks from "../components/tasks/Tasks.vue";
 import NewTask from "../components/tasks/NewTask.vue";
 
@@ -66,6 +66,7 @@ const tasks = ref([]);
 onMounted(async () => {
   const { data } = await allTasks();
   tasks.value = data.data;
+  console.log(task.value);
 });
 
 const uncompletedTasks = computed(() =>

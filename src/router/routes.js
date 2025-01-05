@@ -4,6 +4,10 @@ import RegisterPage from "@/pages/RegisterPage.vue";
 
 const routes = [
   {
+    path: "/",
+    redirect: "/tasks",
+  },
+  {
     path: "/tasks",
     name: "tasks",
     component: TasksPage,

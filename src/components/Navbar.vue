@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <div class="container py-2">
-            <router-link :to="{name: ''}" class="navbar-brand">
+            <router-link :to="{ name: '' }" class="navbar-brand">
                 <span>Toedoe</span>
                 <strong>List</strong>
             </router-link>
@@ -15,15 +15,15 @@
                         <router-link :to="{ name: 'tasks' }" class="nav-link">Tasks</router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Summary</a>
+                        <router-link :to="{ name: 'summary' }" class="nav-link">Summary</router-link>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <router-link :to="{name: 'login'}" class="btn btn-outline-secondary ms-2">Login</router-link>
+                        <router-link :to="{ name: 'login' }" class="btn btn-outline-secondary ms-2">Login</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'register'}" class="btn btn-danger ms-2">Register</router-link>
+                        <router-link :to="{ name: 'register' }" class="btn btn-danger ms-2">Register</router-link>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="btn btn-outline-secondary ms-2">Logout</a>

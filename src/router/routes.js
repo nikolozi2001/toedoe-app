@@ -13,6 +13,9 @@ const routes = [
     path: "/tasks",
     name: "tasks",
     component: TasksPage,
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/login",
@@ -28,6 +31,9 @@ const routes = [
     path: "/summary",
     name: "summary",
     component: SummaryPage,
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/:notFound(.*)",

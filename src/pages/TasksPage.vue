@@ -7,32 +7,20 @@
           <NewTask @added="handleAddedTask" />
 
           <!-- List of uncompleted tasks -->
-          <Tasks
-            :tasks="uncompletedTasks"
-            @updated="handleUpdatedTask"
-            @completed="handleCompletedTask"
-            @removed="handleRemovedTask"
-          />
+          <Tasks :tasks="uncompletedTasks" @updated="handleUpdatedTask" @completed="handleCompletedTask"
+            @removed="handleRemovedTask" />
 
           <!-- show toggle button -->
           <div class="text-center my-3" v-show="showToggleCompletedBtn">
-            <button
-              class="btn btn-sm btn-secondary"
-              @click="showCompletedTasks = !showCompletedTasks"
-            >
+            <button class="btn btn-sm btn-secondary" @click="showCompletedTasks = !showCompletedTasks">
               <span v-if="!showCompletedTasks">Show completed</span>
               <span v-else>Hide completed</span>
             </button>
           </div>
 
           <!-- list of completed tasks -->
-          <Tasks
-            :tasks="completedTasks"
-            :show="completedTasksIsVisible && showCompletedTasks"
-            @updated="handleUpdatedTask"
-            @completed="handleCompletedTask"
-            @removed="handleRemovedTask"
-          />
+          <Tasks :tasks="completedTasks" :show="completedTasksIsVisible && showCompletedTasks"
+            @updated="handleUpdatedTask" @completed="handleCompletedTask" @removed="handleRemovedTask" />
         </div>
       </div>
     </div>
@@ -53,7 +41,8 @@ import Tasks from "../components/tasks/Tasks.vue";
 import NewTask from "../components/tasks/NewTask.vue";
 
 const store = useTaskStore();
-const { task } = storeToRefs(store);
+const { completedTasks, uncompletedTasks } = storeToRefs(store);
+
 // store.$patch({
 //     task: {
 //         name: "First task updated using $patch",
@@ -66,15 +55,9 @@ const tasks = ref([]);
 onMounted(async () => {
   const { data } = await allTasks();
   tasks.value = data.data;
-  console.log(task.value);
 });
 
-const uncompletedTasks = computed(() =>
-  tasks.value.filter((task) => !task.is_completed)
-);
-const completedTasks = computed(() =>
-  tasks.value.filter((task) => task.is_completed)
-);
+
 const showToggleCompletedBtn = computed(
   () => uncompletedTasks.value.length > 0 && completedTasks.value.length > 0
 );

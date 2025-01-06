@@ -23,11 +23,17 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginPage,
+    meta: {
+      guest: true,
+    },
   },
   {
     path: "/register",
     name: "register",
     component: RegisterPage,
+    meta: {
+      guest: true,
+    },
   },
   {
     path: "/summary",

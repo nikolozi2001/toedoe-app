@@ -1,37 +1,49 @@
 <template>
     <main class="login-container">
-        <h1 class="text-center">Login Page</h1>
+        <h1 class="text-center">Login Page</h1> 
         <form @submit.prevent="handleSubmit" class="login-form">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" v-model="username" class="form-control" required>
+                <label for="email">Email</label>
+                <input type="text" id="email" v-model="form.email" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" v-model="password" class="form-control" required>
+                <input type="password" id="password" v-model="form.password" class="form-control" required>
             </div>
+            <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
     </main>
 </template>
 
-<script>
-export default {
-    name: 'LoginPage',
-    data() {
-        return {
-            username: '',
-            password: ''
-        };
-    },
-    methods: {
-        handleSubmit() {
-            // Handle login logic here
-            console.log('Username:', this.username);
-            console.log('Password:', this.password);
+<script setup>
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+
+const router = useRouter();
+const store = useAuthStore();
+
+const form = reactive({
+    email: '',
+    password: ''
+});
+
+const errorMessage = ref('');
+
+const handleSubmit = async () => {
+    try {
+        await store.handleLogin(form);
+        router.push('/');
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            errorMessage.value = 'Invalid email or password.';
+        } else {
+            errorMessage.value = 'An error occurred. Please try again.';
         }
+        console.error(error);
     }
-}
+};
 </script>
 
 <style scoped>
@@ -68,5 +80,9 @@ export default {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
+}
+
+.alert {
+    margin-top: 1rem;
 }
 </style>

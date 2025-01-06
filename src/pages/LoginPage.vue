@@ -1,88 +1,65 @@
 <template>
-    <main class="login-container">
-        <h1 class="text-center">Login Page</h1> 
-        <form @submit.prevent="handleSubmit" class="login-form">
-            <div class="form-group">
+    <main class="auth-wrapper">
+        <form class="auth-form" @submit.prevent="handleSubmit">
+            <h1>
+                <span>ToeDoe</span>
+                <strong>List</strong>
+            </h1>
+            <h2 class="h3 mb-4 fw-normal">Please sign in</h2>
+            <div class="form-floating mb-2">
+                <input type="email" class="form-control" :class="{ 'is-invalid': errors.email && errors.email[0] }" id="email" v-model="form.email" placeholder="name@example.com" />
                 <label for="email">Email</label>
-                <input type="text" id="email" v-model="form.email" class="form-control" required>
+                <div class="invalid-feedback" v-if="errors.email && errors.email[0]">
+                    {{ errors.email && errors.email[0] }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" :class="{ 'is-invalid': errors.password && errors.password[0] }" id="password" v-model="form.password" placeholder="Password" />
                 <label for="password">Password</label>
-                <input type="password" id="password" v-model="form.password" class="form-control" required>
+                <div class="invalid-feedback" v-if="errors.password && errors.password[0]">
+                    {{ errors.password && errors.password[0] }}
+                </div>
             </div>
-            <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
         </form>
     </main>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { reactive } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
-const store = useAuthStore();
+const store = useAuthStore()
+const { isLoggedIn, errors } = storeToRefs(store)
+const { handleLogin } = store
 
 const form = reactive({
     email: '',
-    password: ''
-});
-
-const errorMessage = ref('');
+    password: '' 
+})
 
 const handleSubmit = async () => {
-    try {
-        await store.handleLogin(form);
-        router.push('/');
-    } catch (error) {
-        if (error.response && error.response.status === 422) {
-            errorMessage.value = 'Invalid email or password.';
-        } else {
-            errorMessage.value = 'An error occurred. Please try again.';
-        }
-        console.error(error);
+    await handleLogin(form)
+    if (isLoggedIn.value) {
+        router.push({ name: 'tasks' })
     }
 };
 </script>
 
 <style scoped>
-.login-container {
-    min-height: 50vh;
-    margin-top: 2rem;
+.auth-wrapper {
+    width: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    min-height: 60vh;
+    margin-top: 2rem;
 }
-
-.login-form {
-    width: 100%;
-    max-width: 400px;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.btn-block {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-}
-
-.alert {
-    margin-top: 1rem;
+.auth-form {
+    width: 400px;
 }
 </style>

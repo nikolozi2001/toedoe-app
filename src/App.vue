@@ -19,7 +19,7 @@ import Footer from "./components/Footer.vue";
     transition: opacity 0.5s ease;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }

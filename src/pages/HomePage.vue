@@ -1,43 +1,22 @@
 <template>
-    <main class="home-container">
-        <h1 class="text-center">Welcome to ToeDoeList</h1>
-        <p class="text-center lead">Your ultimate task management solution.</p>
-        <div class="text-center mt-4">
-            <RouterLink to="/login" class="btn btn-primary mx-2">Log in</RouterLink>
-            <RouterLink to="/about" class="btn btn-secondary mx-2">Learn More</RouterLink>
+    <main class="px-4 py-5 my-5 text-center" style="min-height: 50vh">
+        <h1 class="display-5 fw-bold mt-4">Stay Organized, be productive</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Organize your ideas, and be productive everyday.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <router-link
+                    :to="{ name: 'register' }"
+                    class="btn btn-primary btn-lg px-4 gap-3"
+                    >Sign up</router-link
+                >
+                <router-link
+                    :to="{ name: 'login' }"
+                    class="btn btn-outline-secondary btn-lg px-4"
+                    >Sign in</router-link
+                >
+            </div>
         </div>
     </main>
 </template>
-
-<script>
-import { RouterLink } from 'vue-router';
-
-export default {
-    name: 'HomePage',
-    components: {
-        RouterLink
-    }
-}
-</script>
-
-<style scoped>
-.home-container {
-    min-height: 50vh;
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.lead {
-    font-size: 1.25rem;
-    font-weight: 300;
-}
-
-.btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-}
-</style>

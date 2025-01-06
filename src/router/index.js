@@ -5,7 +5,7 @@ import { useAuthStore } from "../stores/auth";
 const router = createRouter({
   routes,
   history: createWebHistory(),
-  linkActiveClass: "active",
+  // linkActiveClass: "active",
 });
 
 router.beforeEach(async (to, from) => {
@@ -19,7 +19,7 @@ router.beforeEach(async (to, from) => {
       },
     };
   } else if (to.meta.guest && store.isLoggedIn) {
-    return { name: "home" };
+    return { name: "tasks" };
   }
 });
 

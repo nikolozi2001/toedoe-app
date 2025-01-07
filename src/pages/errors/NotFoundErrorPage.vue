@@ -1,10 +1,54 @@
 <template>
-    <div class="container py-5">
-        <h1>404</h1>
-        <p>
-            Sorry, the page <code>{{ $route.params.notFound }}</code> you're
-            looking for is not found
+    <div class="container py-5 text-center">
+        <h1 class="display-4">Page Not Found</h1>
+        <span class="display-1 text-danger">404</span>
+        <span class="d-block my-3">
+            <strong>Route</strong> <code>{{ notFoundRoute }}</code> <strong>Not Found</strong>
+        </span>
+        <p class="lead">
+            The page you are looking for does not exist or has been moved.
         </p>
-        <router-link :to="{ name: 'tasks' }">Back to your tasks</router-link>
+        <RouterLink :to="{ name: 'tasks' }" class="btn btn-primary btn-lg mt-3">Go to Tasks</RouterLink>
     </div>
 </template>
+
+<script>
+export default {
+    name: 'NotFoundErrorPage',
+    computed: {
+        notFoundRoute() {
+            return this.$route.params && this.$route.params.notFound ? this.$route.params.notFound : 'unknown';
+        }
+    }
+}
+</script>
+
+<style scoped>
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.display-1 {
+    font-size: 6rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+</style>

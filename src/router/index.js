@@ -19,7 +19,7 @@ router.beforeEach(async (to, from) => {
       },
     };
   } else if (to.meta.guest && store.isLoggedIn) {
-    return { name: "home" };
+    return { name: "tasks" };
   }
 });
 

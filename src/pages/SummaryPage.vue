@@ -28,6 +28,13 @@
 
                     <!-- Summaries Section -->
                     <div v-else-if="Object.keys(summaries).length > 0">
+                        <div class="mb-5">
+                            <!-- Chart Section -->
+                            <h2 class="mb-3">Task Distribution</h2>
+                            <BarChart :chart-data="chartData" />
+                        </div>
+
+                        <!-- Summaries List -->
                         <div v-for="(tasks, description) in summaries" :key="description" class="mb-4">
                             <Summaries :tasks="tasks" :description="description" />
                         </div>
@@ -45,10 +52,11 @@
 
 <script setup>
 import { useSummaryStore } from "../stores/summary";
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
 import Summaries from "../components/summaries/Summaries.vue";
 import SummaryFilter from "../components/summaries/filter/SummaryFilter.vue";
+import BarChart from "../components/chart/BarChart.vue";
 
 // State and Stores
 const store = useSummaryStore();
@@ -76,6 +84,30 @@ const loadSummaries = async () => {
         isLoading.value = false;
     }
 };
+
+// Chart Data
+const chartData = computed(() => {
+    const labels = Object.keys(summaries.value);
+    const data = labels.map((key) => summaries.value[key].length);
+
+    return {
+        labels,
+        datasets: [
+            {
+                label: "Tasks",
+                data,
+                backgroundColor: [
+                    "#6c757d",
+                    "#007bff",
+                    "#28a745",
+                    "#ffc107",
+                    "#dc3545",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+});
 
 // Lifecycle Hooks
 onMounted(loadSummaries);
